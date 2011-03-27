@@ -1,0 +1,11 @@
+<?php
+
+class Conf {
+  public static $orig = '..';
+  public static $max_width = 640;
+  public static $max_height = 480;
+  // it's strongly recommended that you set allowed sizes
+  //public static $sizes = array("22x22"=>true,"24x24"=>true, "32x32"=>true, "48x48"=>true, "64x64"=>true);
+}
+
+?>
