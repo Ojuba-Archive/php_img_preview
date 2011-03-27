@@ -12,6 +12,13 @@ Can we use it in a commercial closed source site ?
 =================================
 Yes
 
+Where can I get it ?
+=================================
+the home page of the project is
+  * http://git.ojuba.org/cgit/php_img_preview/
+
+the latest file is 
+  * http://git.ojuba.org/cgit/php_img_preview/snapshot/php_img_preview-master.tar.bz2
 
 How does it work ?
 =================================

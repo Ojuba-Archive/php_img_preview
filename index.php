@@ -4,7 +4,9 @@
  * PHP image preview/ thumbnails maker
  * Muayyad Saleh Alsadi <alsadi@gmail.com>
  * this file is in public domain
- *
+ * 
+ * the latest version can be obtained from 
+ * http://git.ojuba.org/cgit/php_img_preview/snapshot/php_img_preview-master.tar.bz2
  ***/
 
 include_once(dirname(__FILE__) . "/settings.php");
