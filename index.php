@@ -19,9 +19,8 @@ function error($msg, $code=404) {
 function save_as_jpg($src, $dst, $w, $h) {
   if ($w>Conf::$max_width || $h>Conf::$max_height) return error('too big');
   if (isset(Conf::$sizes) && (!isset(Conf::$sizes[$w.'x'.$h]) || !Conf::$sizes[$w.'x'.$h] )) error('not allowed size');
-  if (!mkdir(dirname($dst), 0777, true)) {
-    if (!is_dir(dirname($dst))) error('could not create directory');
-  }
+  @mkdir(dirname($dst), 0777, true);
+  if (!is_dir(dirname($dst))) error('could not create directory');
   list($w_src, $h_src, $type)=getimagesize($src);
   if ($type!=IMAGETYPE_GIF && $type!=IMAGETYPE_JPEG && $type!=IMAGETYPE_PNG) error('unsupported image type');
   $ratio = $w_src/$h_src;
@@ -56,9 +55,8 @@ function lock_release($l, $lock_fn) {
 
 $fn=substr(strstr($_SERVER['PHP_SELF'], 'index.php'),10);
 $locks_d=dirname(__FILE__).'/locks/';
-if (!file_exists($locks_d)) {
-  mkdir($locks_d) or die("could not create directory [$lock_d]\n");
-}
+@mkdir(dirname($locks_d), 0777, true);
+if (!is_dir(dirname($locks_d))) die("could not create directory [$lock_d]\n");
 $lock_fn=$locks_d.md5($fn);
 if (!$fn) error('missing file name');;
 if (strstr($fn, '..')) error('double dots not allowed');
