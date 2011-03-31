@@ -23,8 +23,6 @@ function save_as_jpg($src, $dst, $w, $h) {
   if (!is_dir(dirname($dst))) error('could not create directory');
   list($w_src, $h_src, $type)=getimagesize($src);
   if ($type!=IMAGETYPE_GIF && $type!=IMAGETYPE_JPEG && $type!=IMAGETYPE_PNG) error('unsupported image type');
-  $ratio = $w_src/$h_src;
-  if ($w/$h > $ratio) $w = floor($h*$ratio); else $h = floor($w/$ratio);
   switch ($type)
   {
     case IMAGETYPE_GIF: $img_src = imagecreatefromgif($src); break;
@@ -32,7 +30,12 @@ function save_as_jpg($src, $dst, $w, $h) {
     case IMAGETYPE_PNG: $img_src = imagecreatefrompng($src); break;
   }
   $img_dst = imagecreatetruecolor($w, $h);  //  resample
-  imagecopyresampled($img_dst, $img_src, 0, 0, 0, 0, $w, $h, $w_src, $h_src);
+  $bgcolor = imagecolorallocate($img_dst, 255, 255, 255);
+  imagefilledrectangle ($img_dst, 0, 0, $w-1, $h-1, $bgcolor);
+  $w0=$w; $h0=$h;
+  $ratio = $w_src/$h_src;
+  if ($w/$h > $ratio) $w = floor($h*$ratio); else $h = floor($w/$ratio);
+  imagecopyresampled($img_dst, $img_src, floor(($w0-$w)/2), floor(($h0-$h)/2), 0, 0, $w, $h, $w_src, $h_src);
   //  save new image
   
   if (!imagejpeg($img_dst, $dst)) error("could not save image");
