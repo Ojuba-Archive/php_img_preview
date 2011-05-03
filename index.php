@@ -55,7 +55,7 @@ function save_as_jpg($src, $dst, $w, $h) {
     case 2:
       $ratio = $w/$h;
       if ($w_src/$h_src > $ratio) $w_src = floor($h_src*$ratio); else $h_src = floor($w_src/$ratio);
-      imagecopyresampled($img_dst, $img_src, 0, 0, floor(($w_src-$w0_src)/2), floor(($h0_src-$h_src)/2), $w, $h, $w_src, $h_src);
+      imagecopyresampled($img_dst, $img_src, 0, 0, floor(($w0_src-$w_src)/2), floor(($h0_src-$h_src)/2), $w, $h, $w_src, $h_src);
       break;
     default:
       error('unsupported aspect handling key.');
