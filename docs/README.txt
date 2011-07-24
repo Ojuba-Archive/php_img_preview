@@ -51,10 +51,17 @@ and an image is accessible through:
 over the web, then a jpg preview of it can be accessed through
  http://localhost/assets/php_img_preview/32x32/linux/screenshot1.png.jpg
 
+it also supports .png previews of png and gif files like this
+
+ http://localhost/assets/php_img_preview/32x32/linux/myicon.gif.png
+
 Why there are two extensions ?
 =================================
 think of it as a JPEG preview of the png image
 
+Does it support PNG preview of JPEG files (.jpg.png) ?
+=================================
+We have intentionally disabled this. Only gif and png can have a png preview.
 
 How to remove stall previews ?
 =================================

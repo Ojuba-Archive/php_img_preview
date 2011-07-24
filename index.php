@@ -31,8 +31,9 @@ function load_image($fn) {
   return array($w, $h, $type, $img);
 }
 
-function save_as_jpg($src, $dst, $w, $h) {
-  if ($w>Conf::$max_width || $h>Conf::$max_height) return error('too big');
+function save_image_file($file_type, $src, $dst, $w, $h) {
+  if ($file_type!='png' && $file_type!='jpeg') return error('unsupported file type');
+	if ($w>Conf::$max_width || $h>Conf::$max_height) return error('too big');
   if (isset(Conf::$sizes) && (!isset(Conf::$sizes[$w.'x'.$h]) || !Conf::$sizes[$w.'x'.$h] )) error('not allowed size');
   $wms=Conf::$sizes[$w.'x'.$h];
   @mkdir(dirname($dst), 0777, true);
@@ -75,8 +76,7 @@ function save_as_jpg($src, $dst, $w, $h) {
     }
   }
   //  save new image
-  
-  if (!imagejpeg($img_dst, $dst)) error("could not save image");
+  if (!call_user_func("image$file_type",$img_dst, $dst)) error("could not save image");
   imagedestroy($img_src);
   imagedestroy($img_dst);
 }
@@ -104,18 +104,22 @@ if (strstr($fn, '..')) error('double dots not allowed');
 $abs_dst=dirname(__FILE__).'/'.$fn;
 
 $a=array();
-if (!preg_match('/^([0-9]+)x([0-9]+)\/(.*)\.jpg/',$fn,$a)) error('wrong file name syntax');
+if (!preg_match('/^([0-9]+)x([0-9]+)\/(.*(?:\.(png|jpe?g|gif)))\.(png|jpg)/',$fn,$a)) error('wrong file name syntax');
 $w=$a[1];
 $h=$a[2];
+$e1=$a[4];
+$e2=$a[5];
+if ($e2=='png' && $e1!='png' && $e1!='gif')  error('wrong file name syntax');
 $src=Conf::$orig.'/'.$a[3];
 if (!file_exists($src)) error('original file does not exists!');
 
 $l=lock_aquire($lock_fn);
 if (!file_exists($abs_dst)) {
-  save_as_jpg($src, $abs_dst."~", $w, $h);
+  save_image_file(($e2=='png')?'png':'jpeg', $src, $abs_dst."~", $w, $h);
   rename($abs_dst."~", $abs_dst);
 }
-header('Content-Type: image/jpeg', TRUE, 200);
+if ($e2=='png') header('Content-Type: image/png', TRUE, 200);
+else header('Content-Type: image/jpeg', TRUE, 200);
 print file_get_contents($abs_dst);
 lock_release($l, $lock_fn);
 
