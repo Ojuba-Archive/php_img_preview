@@ -106,13 +106,14 @@ if ($p!=false) {
   $fn=substr($_SERVER['REQUEST_URI'], $p+1);
 }
 if (!$fn) error('missing file name');
+$fn=urldecode ($fn);
+if (strstr($fn, '..')) error('double dots not allowed');
+
 $locks_d=dirname(__FILE__).'/locks/';
 @mkdir(dirname($locks_d), 0777, true);
 if (!is_dir(dirname($locks_d))) die("could not create directory [$lock_d]\n");
 $lock_fn=$locks_d.md5($fn);
-if (strstr($fn, '..')) error('double dots not allowed');
-$abs_dst=dirname(__FILE__).'/'.$fn;
-
+$abs_dst=realpath(dirname(__FILE__)).'/'.$fn;
 $a=array();
 if (!preg_match('/^(([0-9]+)x([0-9]+)(?:_\w+)?)\/(.*(?:\.(png|jpe?g|gif)))\.(png|jpg)/i',$fn,$a)) error('wrong file name syntax');
 $preset=$a[1];
