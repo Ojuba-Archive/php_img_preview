@@ -82,7 +82,7 @@ function save_image_file($file_type, $src, $dst, $preset, $w, $h) {
     }
   }
   //  save new image
-  if (!call_user_func("image$file_type",$img_dst, $dst)) error("could not save image");
+  if (!call_user_func("image$file_type",$img_dst, $dst, Conf::$qaulity[$file_type] )) error("could not save image");
   imagedestroy($img_src);
   imagedestroy($img_dst);
 }
