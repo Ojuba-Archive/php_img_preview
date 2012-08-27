@@ -70,8 +70,8 @@ function save_image_file($file_type, $src, $dst, $preset, $w, $h) {
       call_user_func_array('imagefilter', $ua);
     } else {
     list($w_wm, $h_wm, $wm_type, $wm_img)=load_image(Conf::$orig.$wm[0]);
-    $px=sizeof($wm>=4)?$wm[3]:0;
-    $py=sizeof($wm>=5)?$wm[4]:0;
+    $px=(sizeof($wm)>=4)?$wm[3]:0;
+    $py=(sizeof($wm)>=5)?$wm[4]:0;
     imagecopy($img_dst, $wm_img, $px+($w0-$w_wm-2*$px)*$wm[1], $py+($h0-$h_wm+-2*$py)*$wm[2], 0, 0, $w_wm, $h_wm);
     }
     } else { // tile
